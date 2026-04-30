@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SinceK Shop</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body { font-family: sans-serif; background-color: #121212; color: white; text-align: center; padding: 20px; }
+        .container { max-width: 400px; margin: auto; border: 1px solid #333; padding: 20px; border-radius: 15px; background: #1e1e1e; }
+        .diamond-card { border: 1px solid #444; padding: 15px; margin: 10px 0; border-radius: 10px; cursor: pointer; transition: 0.2s; }
+        .diamond-card:hover { background: #333; border-color: #0088cc; }
+        .price { color: #00d2ff; font-weight: bold; }
+        input { width: 90%; padding: 10px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #444; background: #2c2c2c; color: white; }
+        button { width: 100%; padding: 12px; background: #0088cc; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>💎 SinceK Shop</h2>
+        <p>Diamond ဝယ်ယူရန် ID ဖြည့်ပြီး Package ရွေးပါ</p>
+        
+        <input type="text" id="game_id" placeholder="Enter Player ID (e.g. 12345678)">
+        
+        <div class="diamond-card" onclick="selectPack('86 Diamonds', '50 THB')">
+            86 Diamonds - <span class="price">50 THB</span>
+        </div>
+        <div class="diamond-card" onclick="selectPack('172 Diamonds', '100 THB')">
+            172 Diamonds - <span class="price">100 THB</span>
+        </div>
+
+        <p id="selected_text" style="color: #00d2ff;"></p>
+        <button onclick="sendOrder()">Order တင်မည်</button>
+    </div>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        let selectedItem = "";
+        tg.expand(); 
+
+        function selectPack(name, price) {
+            selectedItem = name + " - " + price;
+            document.getElementById('selected_text').innerText = "ရွေးချယ်ထားသည်- " + selectedItem;
+        }
+
+        function sendOrder() {
+            let id = document.getElementById('game_id').value;
+            if(!id || !selectedItem) {
+                alert("ID နဲ့ Package ကို မှန်ကန်စွာ ဖြည့်သွင်းပေးပါ");
+                return;
+            }
+            // Bot ဆီ Data ပို့ခြင်း
+            tg.sendData(JSON.stringify({player_id: id, pack: selectedItem}));
+        }
+    </script>
+</body>
+</html>
