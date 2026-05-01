@@ -3,203 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SinceK Shop - Premium UI</title>
+    <title>SinceK Shop - Full Web Checkout</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root {
-            --bg-color: #1a0b2e;
-            --main-gradient: linear-gradient(135deg, #4b1a7d 0%, #1a0b2e 100%);
-            --accent-color: #d121ff;
-            --tab-inactive: rgba(255, 255, 255, 0.1);
-            --card-border: #3b2063;
-        }
-
-        body {
-            font-family: 'Roboto', sans-serif;
-            background: var(--bg-color);
-            background-attachment: fixed;
-            color: white;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-        }
-
-        /* Header & Logo */
-        .header {
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .logo { font-size: 28px; font-weight: bold; letter-spacing: 2px; }
-        .logo span { color: var(--accent-color); }
-
-        /* Action Buttons */
-        .action-btns {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            padding: 10px;
-        }
-        .action-btn {
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 12px;
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-        /* Tab Navigation */
-        .tabs {
-            display: flex;
-            justify-content: center;
-            background: rgba(0,0,0,0.3);
-            margin: 20px;
-            border-radius: 15px;
-            overflow: hidden;
-        }
-        .tab {
-            flex: 1;
-            padding: 15px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .tab.active { background: var(--accent-color); font-weight: bold; }
-
-        /* Game Grid */
-        .game-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            padding: 15px;
-        }
-        .game-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--card-border);
-            border-radius: 15px;
-            padding: 10px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .game-card:hover { border-color: var(--accent-color); transform: scale(1.05); }
-        .game-card img {
-            width: 100%;
-            border-radius: 12px;
-            aspect-ratio: 1/1;
-            object-fit: cover;
-        }
-        .game-title {
-            font-size: 11px;
-            margin-top: 8px;
-            color: #ccc;
-        }
-
-        /* Notice Board */
-        .notice {
-            font-size: 12px;
-            background: rgba(209, 33, 255, 0.1);
-            color: var(--accent-color);
-            margin: 10px 20px;
-            padding: 10px;
-            border-radius: 10px;
-        }
-
-        .section { display: none; }
-        .section.active { display: block; }
+        :root { --bg: #1a0b2e; --accent: #d121ff; --card: #25143d; --primary: #0088cc; }
+        body { font-family: 'Roboto', sans-serif; background: var(--bg); color: white; margin: 0; padding: 20px; text-align: center; }
+        .box { background: var(--card); padding: 20px; border-radius: 15px; border: 1px solid #3b2063; margin-bottom: 20px; text-align: left; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .item-card { background: var(--card); border: 1px solid #3b2063; padding: 15px; border-radius: 12px; cursor: pointer; }
+        .item-card.selected { border-color: var(--accent); background: #3b1a5e; }
+        input, select { width: 100%; background: #120821; border: 1px solid #4d2b7d; padding: 12px; border-radius: 8px; color: white; margin-top: 10px; box-sizing: border-box; }
+        .btn { width: 100%; padding: 15px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        .btn-accent { background: var(--accent); color: white; font-size: 16px; }
+        .payment-info { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; margin-top: 15px; border: 1px dashed var(--accent); }
     </style>
 </head>
 <body>
 
-<div class="header">
-    <div class="logo">SINCEK<span>.SHOP</span></div>
-    <div style="font-size: 12px; opacity: 0.7;">Login/Sign Up 👤</div>
-</div>
+<div style="font-size: 24px; font-weight: bold; margin-bottom: 20px;">SINCEK<span>.SHOP</span></div>
 
-<div class="action-btns">
-    <div class="action-btn">📩 Notifications</div>
-    <div class="action-btn" onclick="window.location.href='https://t.me/since_K'">📢 Contact Admin</div>
-</div>
-
-<div class="notice">
-    ⚠️ (၂၄) နာရီ ဝယ်ယူနိုင်ရန်အတွက် မနက် (၈) နာရီမှ ည (၁၀) နာရီအထိ ငွေဖြည့်သွင်းပေးပါ။
-</div>
-
-<div class="tabs">
-    <div class="tab active" onclick="switchTab('topup', this)">Game Top Up ID</div>
-    <div class="tab" onclick="switchTab('login', this)">Game Login</div>
-    <div class="tab" onclick="switchTab('premium', this)">Premium</div>
-</div>
-
-<div id="topup" class="section active">
-    <div class="game-grid">
-        <div class="game-card" onclick="selectGame('Mobile Legends')">
-            <img src="https://img.mobilelegends.com/group1/M00/00/A2/CqYI2mF0oK6AFWfDAAAeXz3VnYo341.png" alt="ML">
-            <div class="game-title">Mobile Legends</div>
-        </div>
-        <div class="game-card" onclick="selectGame('Free Fire')">
-            <img src="https://play-lh.googleusercontent.com/RwOnE4Y7O7N_p6Y8T5y3Z5E_4Z5o9j_z_2U" alt="FF">
-            <div class="game-title">Free Fire</div>
-        </div>
-        <div class="game-card" onclick="selectGame('PUBG Global')">
-            <img src="https://play-lh.googleusercontent.com/R9S78772j59j9j9j9j9j9j9j9j9j9j9j9j" alt="PUBG">
-            <div class="game-title">Pubg Global</div>
-        </div>
-        <div class="game-card" onclick="selectGame('Genshin Impact')">
-            <img src="https://play-lh.googleusercontent.com/9j9j9j9j9j9j9j9j9j9j9j9j9j9j9j9j9j9j" alt="Genshin">
-            <div class="game-title">Genshin Impact</div>
-        </div>
-        </div>
-</div>
-
-<div id="login" class="section">
-    <div class="game-grid">
-        <div class="game-card" onclick="selectGame('Roblox')">
-            <img src="https://play-lh.googleusercontent.com/WNWZ_9j9j9j9j9j9j9j9j9j9j9j9j9j9j9j" alt="Roblox">
-            <div class="game-title">Roblox</div>
-        </div>
-        <div class="game-card" onclick="selectGame('Clash of Clans')">
-            <img src="https://play-lh.googleusercontent.com/9j9j9j9j9j9j9j9j9j9j9j9j9j9j9j9j9j9j" alt="COC">
-            <div class="game-title">Clash of Clans</div>
-        </div>
+<div class="box">
+    <label>၁။ Game ရွေးပါ</label>
+    <select id="game_select" onchange="renderItems()">
+        <option value="MLBB">Mobile Legends</option>
+        <option value="PUBG">PUBG Mobile</option>
+    </select>
+    
+    <label style="display:block; margin-top:15px;">၂။ Player ID & Server ID ဖြည့်ပါ</label>
+    <div style="display:flex; gap:10px;">
+        <input type="number" id="player_id" placeholder="User ID">
+        <input type="number" id="server_id" placeholder="Server ID">
     </div>
+    <a href="https://www.malsawmastore.in/gadget/mlregionchecker" target="_blank" style="color:var(--accent); font-size:12px; text-decoration:none; display:block; margin-top:8px;">Check ML Region ➔</a>
 </div>
 
-<div id="premium" class="section">
-    <div class="game-grid">
-        <div class="game-card" onclick="selectGame('Telegram Premium')">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="TG">
-            <div class="game-title">Telegram Premium</div>
-        </div>
+<label style="display:block; text-align:left; margin-bottom:10px;">၃။ Package ရွေးပါ</label>
+<div class="grid" id="items-list"></div>
+
+<div class="box" style="margin-top:20px;">
+    <label>၄။ Payment ရွေးပြီး ငွေလွှဲပါ</label>
+    <div class="grid">
+        <div class="item-card" id="pay_kpay" onclick="selectPay('Kpay')">KBZ Pay</div>
+        <div class="item-card" id="pay_wave" onclick="selectPay('Wave')">Wave Pay</div>
     </div>
+    <div id="payment-details" class="payment-info" style="display:none;"></div>
+    
+    <label style="display:block; margin-top:15px;">၅။ ငွေလွှဲ Screenshot တင်ပါ</label>
+    <input type="file" id="ss_file" accept="image/*" style="border:none;">
 </div>
 
-<div style="padding: 40px 20px; font-size: 10px; opacity: 0.5;">
-    Privacy Policy / Terms & Conditions
-</div>
+<button class="btn btn-accent" id="submit-btn" onclick="submitOrder()">အတည်ပြုပြီး ဝယ်ယူမည် 💎</button>
 
 <script>
     let tg = window.Telegram.WebApp;
     tg.expand();
+    let selectedItem = null;
+    let selectedMethod = null;
 
-    function switchTab(tabId, el) {
-        // Tab ပြောင်းခြင်း
-        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-        document.getElementById(tabId).classList.add('active');
-        
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        el.classList.add('active');
+    const prices = {
+        "MLBB": {
+            "Wkp 1": "6700", "Wkp 2": "13400", "Wkp 3": "20100", "Wkp 4": "26800", "Wkp 5": "33500", 
+            "Twlp": "38000", "Dia 50+50": "3800", "Dia 150+150": "11000", "Dia 250+250": "17500", 
+            "Dia 500+500": "35500", "Dia 86": "5400", "Dia 172": "10800", "Dia 257": "16200", 
+            "Dia 343": "21600", "Dia 429": "27000", "Dia 514": "32400", "Dia 600": "37800", 
+            "Dia 706": "43200", "Dia 878": "54000", "Dia 963": "59400", "Dia 1049": "64800", 
+            "Dia 1135": "70200", "Dia 1412": "86400", "Dia 2195": "129600", "Dia 3688": "216000", 
+            "Dia 5532": "324000", "Dia 9288": "535000"
+        },
+        "PUBG": {
+            "Uc 60": "4300", "Uc 180": "12900", "Uc 325": "20800", "Uc 385": "25100", "Uc 660": "41000", 
+            "Uc 720": "45300", "Uc 985": "61800", "Uc 1320": "82000", "Uc 1800": "103000", 
+            "Uc 3850": "193500", "Uc 8100": "365000"
+        }
+    };
+
+    const adminPay = {
+        "Kpay": { name: "Thandar Soe", phone: "09982015936" },
+        "Wave": { name: "Soe Yan Naing", phone: "09740027247" }
+    };
+
+    function renderItems() {
+        let game = document.getElementById('game_select').value;
+        let list = document.getElementById('items-list');
+        list.innerHTML = '';
+        for (let name in prices[game]) {
+            let card = document.createElement('div');
+            card.className = 'item-card';
+            card.innerHTML = `<span>${name}</span><br><span style="color:#00d2ff">${prices[game][name]} Ks</span>`;
+            card.onclick = () => {
+                document.querySelectorAll('.item-card').forEach(i => i.classList.remove('selected'));
+                card.classList.add('selected');
+                selectedItem = { name: name, price: prices[game][name] };
+            };
+            list.appendChild(card);
+        }
     }
 
-    function selectGame(gameName) {
-        // Game ရွေးလိုက်ရင် Bot ဆီ Data ပို့မယ် (နောက်အဆင့်မှာ စျေးနှုန်းပြခိုင်းမယ်)
-        tg.sendData(JSON.stringify({ action: "select_game", game: gameName }));
+    function selectPay(method) {
+        selectedMethod = method;
+        document.getElementById('pay_kpay').classList.remove('selected');
+        document.getElementById('pay_wave').classList.remove('selected');
+        document.getElementById('pay_' + method.toLowerCase()).classList.add('selected');
+        let detail = adminPay[method];
+        document.getElementById('payment-details').style.display = 'block';
+        document.getElementById('payment-details').innerHTML = `<b>Name:</b> ${detail.name}<br><b>Phone:</b> ${detail.phone}`;
     }
+
+    async function submitOrder() {
+        let fileInput = document.getElementById('ss_file');
+        let pid = document.getElementById('player_id').value;
+        if(!pid || !selectedItem || !selectedMethod || fileInput.files.length === 0) {
+            return tg.showAlert("အချက်အလက်အားလုံး ပြည့်စုံအောင် ဖြည့်ပေးပါဗျာ။");
+        }
+
+        document.getElementById('submit-btn').innerText = "⌛ ခေတ္တစောင့်ပါ...";
+        document.getElementById('submit-btn').disabled = true;
+
+        let formData = new FormData();
+        formData.append('photo', fileInput.files[0]);
+        formData.append('user_id', tg.initDataUnsafe.user.id);
+        formData.append('user_name', tg.initDataUnsafe.user.first_name);
+        formData.append('game_id', pid + (document.getElementById('server_id').value ? " (" + document.getElementById('server_id').value + ")" : ""));
+        formData.append('game', document.getElementById('game_select').value);
+        formData.append('item', selectedItem.name);
+        formData.append('price', selectedItem.price);
+        formData.append('method', selectedMethod);
+
+        try {
+            const response = await fetch('/upload', { method: 'POST', body: formData });
+            if (response.ok) {
+                tg.showAlert("Order တင်ခြင်း အောင်မြင်ပါသည်။ Admin မှ စစ်ဆေးပေးပါလိမ့်မည်။");
+                tg.close();
+            } else {
+                tg.showAlert("ပို့မရဖြစ်နေပါသည်။ ခဏနေမှ ပြန်စမ်းကြည့်ပါ။");
+            }
+        } catch (e) {
+            tg.showAlert("Error: " + e);
+        }
+    }
+    renderItems();
 </script>
-
 </body>
 </html>
