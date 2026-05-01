@@ -3,117 +3,227 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SinceK Shop - Diamonds & UC</title>
+    <title>SinceK Shop - Premium Topup</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
-        :root { --primary: #0088cc; --bg: #121212; --card: #1e1e1e; --text: #ffffff; }
-        body { font-family: sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; text-align: center; }
-        .container { max-width: 500px; margin: auto; }
-        .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
-        .tab { flex: 1; padding: 10px; background: var(--card); border-radius: 8px; cursor: pointer; border: 1px solid #333; }
-        .tab.active { background: var(--primary); border-color: var(--primary); }
-        .input-group { margin-bottom: 20px; text-align: left; }
-        input { width: 100%; padding: 12px; box-sizing: border-box; border-radius: 8px; border: 1px solid #444; background: #2c2c2c; color: white; margin-top: 5px; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .item-card { background: var(--card); padding: 12px; border-radius: 10px; border: 1px solid #333; cursor: pointer; font-size: 14px; }
-        .item-card:hover { border-color: var(--primary); }
-        .item-card.selected { border-color: var(--primary); background: #252525; box-shadow: 0 0 10px rgba(0,136,204,0.3); }
-        .price { color: #00d2ff; display: block; font-weight: bold; margin-top: 5px; }
-        .btn-order { width: 100%; padding: 15px; background: var(--primary); color: white; border: none; border-radius: 10px; font-weight: bold; margin-top: 25px; cursor: pointer; font-size: 16px; }
-        .game-section { display: none; }
-        .game-section.active { display: block; }
+        :root {
+            --primary: #0088cc;
+            --accent: #00d2ff;
+            --dark-bg: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        .header {
+            padding: 30px 20px;
+            text-align: center;
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+        }
+
+        .header h1 { margin: 0; font-size: 24px; color: var(--accent); }
+        .header p { color: var(--text-dim); font-size: 13px; }
+
+        .container { padding: 20px; max-width: 600px; margin: auto; }
+
+        /* Game Selector Tabs */
+        .tabs {
+            display: flex;
+            background: var(--card-bg);
+            padding: 5px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+            font-size: 14px;
+        }
+
+        .tab.active { background: var(--primary); box-shadow: 0 4px 15px rgba(0, 136, 204, 0.4); }
+
+        /* Input Styles */
+        .input-box {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            border: 1px solid #334155;
+        }
+
+        .input-box label { display: block; font-size: 12px; color: var(--text-dim); margin-bottom: 8px; }
+        
+        input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid #334155;
+            color: white;
+            padding: 10px 0;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus { border-bottom-color: var(--accent); }
+
+        /* Items Grid */
+        .items-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .item-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 15px;
+            border: 1px solid #334155;
+            position: relative;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .item-card.selected { border-color: var(--accent); background: #1e3a8a; }
+
+        .item-card i { position: absolute; right: 10px; top: 10px; color: var(--accent); opacity: 0.3; }
+
+        .item-name { display: block; font-size: 14px; font-weight: 600; }
+        .item-price { display: block; font-size: 12px; color: var(--accent); margin-top: 5px; }
+
+        /* Floating Order Button */
+        .order-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(90deg, #0088cc, #00d2ff);
+            border: none;
+            border-radius: 15px;
+            color: white;
+            font-weight: 700;
+            font-size: 16px;
+            margin-top: 30px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0, 136, 204, 0.3);
+        }
+
+        /* Notification Ticker (Wildcard Feature) */
+        .ticker {
+            font-size: 11px;
+            color: #10b981;
+            margin-bottom: 15px;
+            background: rgba(16, 185, 129, 0.1);
+            padding: 8px;
+            border-radius: 8px;
+        }
+
+        .game-content { display: none; }
+        .game-content.active { display: block; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>💎 SinceK Shop</h2>
-        
-        <div class="tabs">
-            <div class="tab active" onclick="switchGame('MLBB')">Mobile Legends</div>
-            <div class="tab" onclick="switchGame('PUBG')">PUBG Mobile</div>
-        </div>
 
-        <div class="input-group">
-            <label>Player ID (e.g. 12345678 1234):</label>
-            <input type="text" id="game_id" placeholder="Enter Game ID and Server ID">
-        </div>
+<div class="header">
+    <h1><i class="fas fa-gem"></i> SinceK Shop</h1>
+    <p>Fast, Safe & Secure Topup Service</p>
+</div>
 
-        <div id="mlbb_section" class="game-section active">
-            <div class="grid" id="mlbb_items"></div>
-        </div>
+<div class="container">
+    <div class="ticker"><i class="fas fa-check-circle"></i> နောက်ဆုံးဝယ်ယူမှု- User ID 5***4 မှ 86 Diamonds ဝယ်ယူသွားပါသည်။</div>
 
-        <div id="pubg_section" class="game-section">
-            <div class="grid" id="pubg_items"></div>
-        </div>
-
-        <button class="btn-order" onclick="sendOrder()">Order တင်မည်</button>
+    <div class="tabs">
+        <div class="tab active" onclick="switchTab('mlbb')">MLBB</div>
+        <div class="tab" onclick="switchTab('pubg')">PUBG</div>
     </div>
 
-    <script>
-        let tg = window.Telegram.WebApp;
-        tg.expand();
-        let selectedItem = null;
-        let currentGame = 'MLBB';
+    <div class="input-box">
+        <label><i class="fas fa-user-circle"></i> PLAYER ID & SERVER ID</label>
+        <input type="text" id="game_id" placeholder="ဥပမာ- 12345678 (1234)">
+    </div>
 
-        const prices = {
-            "MLBB": {
-                "Wkp 1": "6700", "Wkp 2": "13400", "Wkp 3": "20100", "Wkp 4": "26800", "Wkp 5": "33500",
-                "Twlp": "38000", "Dia 50+50": "3800", "Dia 150+150": "11000", "Dia 250+250": "17500",
-                "Dia 500+500": "35500", "Dia 86": "5400", "Dia 172": "10800", "Dia 257": "16200",
-                "Dia 343": "21600", "Dia 429": "27000", "Dia 514": "32400", "Dia 600": "37800",
-                "Dia 706": "43200", "Dia 878": "54000", "Dia 963": "59400", "Dia 1049": "64800",
-                "Dia 1135": "70200", "Dia 1412": "86400", "Dia 2195": "129600", "Dia 3688": "216000",
-                "Dia 5532": "324000", "Dia 9288": "535000"
-            },
-            "PUBG": {
-                "Uc 60": "4300", "Uc 180": "12900", "Uc 325": "20800", "Uc 385": "25100", "Uc 660": "41000",
-                "Uc 720": "45300", "Uc 985": "61800", "Uc 1320": "82000", "Uc 1800": "103000",
-                "Uc 3850": "193500", "Uc 8100": "365000"
-            }
-        };
+    <div id="mlbb" class="game-content active">
+        <div class="items-grid" id="mlbb-list"></div>
+    </div>
 
-        function renderItems() {
-            for (let game in prices) {
-                let grid = document.getElementById(game.toLowerCase() + '_items');
-                for (let item in prices[game]) {
-                    let card = document.createElement('div');
-                    card.className = 'item-card';
-                    card.innerHTML = `${item} <span class="price">${prices[game][item]} Ks</span>`;
-                    card.onclick = () => {
-                        document.querySelectorAll('.item-card').forEach(c => c.classList.remove('selected'));
-                        card.classList.add('selected');
-                        selectedItem = { game: game, item: item, price: prices[game][item] };
-                    };
-                    grid.appendChild(card);
-                }
-            }
-        }
+    <div id="pubg" class="game-content">
+        <div class="items-grid" id="pubg-list"></div>
+    </div>
 
-        function switchGame(game) {
-            currentGame = game;
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.game-section').forEach(s => s.classList.remove('active'));
-            event.target.classList.add('active');
-            document.getElementById(game.toLowerCase() + '_section').classList.add('active');
-            selectedItem = null;
-        }
+    <button class="order-btn" onclick="placeOrder()">Order တင်မည် <i class="fas fa-chevron-right"></i></button>
+</div>
 
-        function sendOrder() {
-            let game_id = document.getElementById('game_id').value;
-            if (!game_id || !selectedItem) {
-                tg.showAlert("ID ဖြည့်ပြီး Item တစ်ခု ရွေးချယ်ပေးပါ");
-                return;
-            }
-            let data = {
-                id: game_id,
-                game: selectedItem.game,
-                item: selectedItem.item,
-                price: selectedItem.price
-            };
-            tg.sendData(JSON.stringify(data));
-        }
+<script>
+    let tg = window.Telegram.WebApp;
+    tg.expand();
+    let selected = null;
+    let currentMode = 'mlbb';
 
-        renderItems();
-    </script>
+    const products = {
+        mlbb: [
+            {n: "86 Diamonds", p: "5400"}, {n: "172 Diamonds", p: "10800"},
+            {n: "Weekly Pass", p: "6700"}, {n: "257 Diamonds", p: "16200"},
+            {n: "Twilight Pass", p: "38000"}, {n: "706 Diamonds", p: "43200"}
+        ],
+        pubg: [
+            {n: "60 UC", p: "4300"}, {n: "325 UC", p: "20800"},
+            {n: "660 UC", p: "41000"}, {n: "1800 UC", p: "103000"}
+        ]
+    };
+
+    function render() {
+        ['mlbb', 'pubg'].forEach(g => {
+            const div = document.getElementById(g + '-list');
+            div.innerHTML = '';
+            products[g].forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'item-card';
+                card.innerHTML = `<i class="fas fa-bolt"></i><span class="item-name">${item.n}</span><span class="item-price">${item.p} Ks</span>`;
+                card.onclick = () => {
+                    document.querySelectorAll('.item-card').forEach(c => c.classList.remove('selected'));
+                    card.classList.add('selected');
+                    selected = { game: g.toUpperCase(), name: item.n, price: item.p };
+                };
+                div.appendChild(card);
+            });
+        });
+    }
+
+    function switchTab(g) {
+        currentMode = g;
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.game-content').forEach(s => s.classList.remove('active'));
+        event.target.classList.add('active');
+        document.getElementById(g).classList.add('active');
+        selected = null;
+    }
+
+    function placeOrder() {
+        const id = document.getElementById('game_id').value;
+        if(!id || !selected) return tg.showAlert("ID ဖြည့်ပြီး Package တစ်ခု ရွေးချယ်ပေးပါဗျာ။");
+        
+        const data = { id: id, game: selected.game, item: selected.name, price: selected.price };
+        tg.sendData(JSON.stringify(data));
+    }
+
+    render();
+</script>
+
 </body>
 </html>
