@@ -132,7 +132,12 @@
         formData.append('method', selectedMethod);
 
         try {
-            const response = await fetch('/upload', { method: 'POST', body: formData });
+            // index.html ထဲက fetch နေရာမှာ ဒါကို အစားထိုးပါ
+const response = await fetch('https://sincekshop-fa7.xs001.jrnm.app/upload', { 
+    method: 'POST', 
+    body: formData 
+});
+
             if (response.ok) {
                 tg.showAlert("Order တင်ခြင်း အောင်မြင်ပါသည်။ Admin မှ စစ်ဆေးပေးပါလိမ့်မည်။");
                 tg.close();
