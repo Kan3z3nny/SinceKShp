@@ -3,226 +3,202 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SinceK Shop - Premium Topup</title>
+    <title>SinceK Shop - Premium UI</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #0088cc;
-            --accent: #00d2ff;
-            --dark-bg: #0f172a;
-            --card-bg: #1e293b;
-            --text-main: #f8fafc;
-            --text-dim: #94a3b8;
+            --bg-color: #1a0b2e;
+            --main-gradient: linear-gradient(135deg, #4b1a7d 0%, #1a0b2e 100%);
+            --accent-color: #d121ff;
+            --tab-inactive: rgba(255, 255, 255, 0.1);
+            --card-border: #3b2063;
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--dark-bg);
-            color: var(--text-main);
+            font-family: 'Roboto', sans-serif;
+            background: var(--bg-color);
+            background-attachment: fixed;
+            color: white;
             margin: 0;
             padding: 0;
-            overflow-x: hidden;
-        }
-
-        .header {
-            padding: 30px 20px;
             text-align: center;
-            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
         }
 
-        .header h1 { margin: 0; font-size: 24px; color: var(--accent); }
-        .header p { color: var(--text-dim); font-size: 13px; }
+        /* Header & Logo */
+        .header {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo { font-size: 28px; font-weight: bold; letter-spacing: 2px; }
+        .logo span { color: var(--accent-color); }
 
-        .container { padding: 20px; max-width: 600px; margin: auto; }
+        /* Action Buttons */
+        .action-btns {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 10px;
+        }
+        .action-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            text-decoration: none;
+        }
 
-        /* Game Selector Tabs */
+        /* Tab Navigation */
         .tabs {
             display: flex;
-            background: var(--card-bg);
-            padding: 5px;
-            border-radius: 12px;
-            margin-bottom: 25px;
+            justify-content: center;
+            background: rgba(0,0,0,0.3);
+            margin: 20px;
+            border-radius: 15px;
+            overflow: hidden;
         }
-
         .tab {
             flex: 1;
-            padding: 12px;
-            text-align: center;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: 0.3s;
+            padding: 15px;
             font-size: 14px;
-        }
-
-        .tab.active { background: var(--primary); box-shadow: 0 4px 15px rgba(0, 136, 204, 0.4); }
-
-        /* Input Styles */
-        .input-box {
-            background: var(--card-bg);
-            padding: 15px;
-            border-radius: 15px;
-            margin-bottom: 25px;
-            border: 1px solid #334155;
-        }
-
-        .input-box label { display: block; font-size: 12px; color: var(--text-dim); margin-bottom: 8px; }
-        
-        input {
-            width: 100%;
-            background: transparent;
-            border: none;
-            border-bottom: 2px solid #334155;
-            color: white;
-            padding: 10px 0;
-            font-size: 16px;
-            outline: none;
+            cursor: pointer;
             transition: 0.3s;
         }
+        .tab.active { background: var(--accent-color); font-weight: bold; }
 
-        input:focus { border-bottom-color: var(--accent); }
-
-        /* Items Grid */
-        .items-grid {
+        /* Game Grid */
+        .game-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        .item-card {
-            background: var(--card-bg);
-            border-radius: 15px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
             padding: 15px;
-            border: 1px solid #334155;
-            position: relative;
+        }
+        .game-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--card-border);
+            border-radius: 15px;
+            padding: 10px;
             cursor: pointer;
             transition: 0.2s;
         }
-
-        .item-card.selected { border-color: var(--accent); background: #1e3a8a; }
-
-        .item-card i { position: absolute; right: 10px; top: 10px; color: var(--accent); opacity: 0.3; }
-
-        .item-name { display: block; font-size: 14px; font-weight: 600; }
-        .item-price { display: block; font-size: 12px; color: var(--accent); margin-top: 5px; }
-
-        /* Floating Order Button */
-        .order-btn {
+        .game-card:hover { border-color: var(--accent-color); transform: scale(1.05); }
+        .game-card img {
             width: 100%;
-            padding: 16px;
-            background: linear-gradient(90deg, #0088cc, #00d2ff);
-            border: none;
-            border-radius: 15px;
-            color: white;
-            font-weight: 700;
-            font-size: 16px;
-            margin-top: 30px;
-            cursor: pointer;
-            box-shadow: 0 10px 20px rgba(0, 136, 204, 0.3);
+            border-radius: 12px;
+            aspect-ratio: 1/1;
+            object-fit: cover;
         }
-
-        /* Notification Ticker (Wildcard Feature) */
-        .ticker {
+        .game-title {
             font-size: 11px;
-            color: #10b981;
-            margin-bottom: 15px;
-            background: rgba(16, 185, 129, 0.1);
-            padding: 8px;
-            border-radius: 8px;
+            margin-top: 8px;
+            color: #ccc;
         }
 
-        .game-content { display: none; }
-        .game-content.active { display: block; }
+        /* Notice Board */
+        .notice {
+            font-size: 12px;
+            background: rgba(209, 33, 255, 0.1);
+            color: var(--accent-color);
+            margin: 10px 20px;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .section { display: none; }
+        .section.active { display: block; }
     </style>
 </head>
 <body>
 
 <div class="header">
-    <h1><i class="fas fa-gem"></i> SinceK Shop</h1>
-    <p>Fast, Safe & Secure Topup Service</p>
+    <div class="logo">SINCEK<span>.SHOP</span></div>
+    <div style="font-size: 12px; opacity: 0.7;">Login/Sign Up 👤</div>
 </div>
 
-<div class="container">
-    <div class="ticker"><i class="fas fa-check-circle"></i> နောက်ဆုံးဝယ်ယူမှု- User ID 5***4 မှ 86 Diamonds ဝယ်ယူသွားပါသည်။</div>
+<div class="action-btns">
+    <div class="action-btn">📩 Notifications</div>
+    <div class="action-btn" onclick="window.location.href='https://t.me/since_K'">📢 Contact Admin</div>
+</div>
 
-    <div class="tabs">
-        <div class="tab active" onclick="switchTab('mlbb')">MLBB</div>
-        <div class="tab" onclick="switchTab('pubg')">PUBG</div>
+<div class="notice">
+    ⚠️ (၂၄) နာရီ ဝယ်ယူနိုင်ရန်အတွက် မနက် (၈) နာရီမှ ည (၁၀) နာရီအထိ ငွေဖြည့်သွင်းပေးပါ။
+</div>
+
+<div class="tabs">
+    <div class="tab active" onclick="switchTab('topup', this)">Game Top Up ID</div>
+    <div class="tab" onclick="switchTab('login', this)">Game Login</div>
+    <div class="tab" onclick="switchTab('premium', this)">Premium</div>
+</div>
+
+<div id="topup" class="section active">
+    <div class="game-grid">
+        <div class="game-card" onclick="selectGame('Mobile Legends')">
+            <img src="https://img.mobilelegends.com/group1/M00/00/A2/CqYI2mF0oK6AFWfDAAAeXz3VnYo341.png" alt="ML">
+            <div class="game-title">Mobile Legends</div>
+        </div>
+        <div class="game-card" onclick="selectGame('Free Fire')">
+            <img src="https://play-lh.googleusercontent.com/RwOnE4Y7O7N_p6Y8T5y3Z5E_4Z5o9j_z_2U" alt="FF">
+            <div class="game-title">Free Fire</div>
+        </div>
+        <div class="game-card" onclick="selectGame('PUBG Global')">
+            <img src="https://play-lh.googleusercontent.com/R9S78772j59j9j9j9j9j9j9j9j9j9j9j9j" alt="PUBG">
+            <div class="game-title">Pubg Global</div>
+        </div>
+        <div class="game-card" onclick="selectGame('Genshin Impact')">
+            <img src="https://play-lh.googleusercontent.com/9j9j9j9j9j9j9j9j9j9j9j9j9j9j9j9j9j9j" alt="Genshin">
+            <div class="game-title">Genshin Impact</div>
+        </div>
+        </div>
+</div>
+
+<div id="login" class="section">
+    <div class="game-grid">
+        <div class="game-card" onclick="selectGame('Roblox')">
+            <img src="https://play-lh.googleusercontent.com/WNWZ_9j9j9j9j9j9j9j9j9j9j9j9j9j9j9j" alt="Roblox">
+            <div class="game-title">Roblox</div>
+        </div>
+        <div class="game-card" onclick="selectGame('Clash of Clans')">
+            <img src="https://play-lh.googleusercontent.com/9j9j9j9j9j9j9j9j9j9j9j9j9j9j9j9j9j9j" alt="COC">
+            <div class="game-title">Clash of Clans</div>
+        </div>
     </div>
+</div>
 
-    <div class="input-box">
-        <label><i class="fas fa-user-circle"></i> PLAYER ID & SERVER ID</label>
-        <input type="text" id="game_id" placeholder="ဥပမာ- 12345678 (1234)">
+<div id="premium" class="section">
+    <div class="game-grid">
+        <div class="game-card" onclick="selectGame('Telegram Premium')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="TG">
+            <div class="game-title">Telegram Premium</div>
+        </div>
     </div>
+</div>
 
-    <div id="mlbb" class="game-content active">
-        <div class="items-grid" id="mlbb-list"></div>
-    </div>
-
-    <div id="pubg" class="game-content">
-        <div class="items-grid" id="pubg-list"></div>
-    </div>
-
-    <button class="order-btn" onclick="placeOrder()">Order တင်မည် <i class="fas fa-chevron-right"></i></button>
+<div style="padding: 40px 20px; font-size: 10px; opacity: 0.5;">
+    Privacy Policy / Terms & Conditions
 </div>
 
 <script>
     let tg = window.Telegram.WebApp;
     tg.expand();
-    let selected = null;
-    let currentMode = 'mlbb';
 
-    const products = {
-        mlbb: [
-            {n: "86 Diamonds", p: "5400"}, {n: "172 Diamonds", p: "10800"},
-            {n: "Weekly Pass", p: "6700"}, {n: "257 Diamonds", p: "16200"},
-            {n: "Twilight Pass", p: "38000"}, {n: "706 Diamonds", p: "43200"}
-        ],
-        pubg: [
-            {n: "60 UC", p: "4300"}, {n: "325 UC", p: "20800"},
-            {n: "660 UC", p: "41000"}, {n: "1800 UC", p: "103000"}
-        ]
-    };
-
-    function render() {
-        ['mlbb', 'pubg'].forEach(g => {
-            const div = document.getElementById(g + '-list');
-            div.innerHTML = '';
-            products[g].forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'item-card';
-                card.innerHTML = `<i class="fas fa-bolt"></i><span class="item-name">${item.n}</span><span class="item-price">${item.p} Ks</span>`;
-                card.onclick = () => {
-                    document.querySelectorAll('.item-card').forEach(c => c.classList.remove('selected'));
-                    card.classList.add('selected');
-                    selected = { game: g.toUpperCase(), name: item.n, price: item.p };
-                };
-                div.appendChild(card);
-            });
-        });
-    }
-
-    function switchTab(g) {
-        currentMode = g;
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.game-content').forEach(s => s.classList.remove('active'));
-        event.target.classList.add('active');
-        document.getElementById(g).classList.add('active');
-        selected = null;
-    }
-
-    function placeOrder() {
-        const id = document.getElementById('game_id').value;
-        if(!id || !selected) return tg.showAlert("ID ဖြည့်ပြီး Package တစ်ခု ရွေးချယ်ပေးပါဗျာ။");
+    function switchTab(tabId, el) {
+        // Tab ပြောင်းခြင်း
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
         
-        const data = { id: id, game: selected.game, item: selected.name, price: selected.price };
-        tg.sendData(JSON.stringify(data));
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        el.classList.add('active');
     }
 
-    render();
+    function selectGame(gameName) {
+        // Game ရွေးလိုက်ရင် Bot ဆီ Data ပို့မယ် (နောက်အဆင့်မှာ စျေးနှုန်းပြခိုင်းမယ်)
+        tg.sendData(JSON.stringify({ action: "select_game", game: gameName }));
+    }
 </script>
 
 </body>
