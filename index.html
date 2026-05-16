@@ -122,7 +122,6 @@
         document.getElementById('submit-btn').disabled = true;
 
         try {
-            // ✨ FIX: Telegram User ဒေတာကို try-catch ထဲမှာ လုံခြုံစွာ စစ်ဆေးထုတ်ယူခြင်း
             let userId = "Unknown";
             let firstName = "Unknown";
             
@@ -141,7 +140,8 @@
             formData.append('price', selectedItem.price);
             formData.append('method', selectedMethod);
 
-            const response = await fetch('https://sincekshop-fa7.xs001.jrnm.app/upload', { 
+            // ✨ FIX: အဆုံး၌ / တိုးထားသော လင့်ခ်အသစ် (Android ရော iOS မှာပါ လမ်းကြောင်းမလွဲစေရန်)
+            const response = await fetch('https://sincekshop-fa7.xs001.jrnm.app/upload/', { 
                 method: 'POST', 
                 body: formData 
             });
