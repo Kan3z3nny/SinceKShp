@@ -140,13 +140,12 @@
             formData.append('price', selectedItem.price);
             formData.append('method', selectedMethod);
 
-            // ✨ FIX: အဆုံး၌ / တိုးထားသော လင့်ခ်အသစ် (Android ရော iOS မှာပါ လမ်းကြောင်းမလွဲစေရန်)
-            const response = await fetch('https://sincekshop-fa7.xs001.jrnm.app/upload/', { 
-                method: 'POST', 
-                body: formData 
-            });
-
-            if (response.ok) {
+            // ✨ လင့်ခ်ရဲ့ အနောက်ဆုံးမှာ / လေး ပါနေတာ သေချာပါစေဗျာ
+const response = await fetch('https://sincekshop-fa7.xs001.jrnm.app/upload/', { 
+    method: 'POST', 
+    body: formData 
+});
+     if (response.ok) {
                 tg.showAlert("Order တင်ခြင်း အောင်မြင်ပါသည်။ Admin မှ စစ်ဆေးပေးပါလိမ့်မည်။");
                 tg.close();
             } else {
