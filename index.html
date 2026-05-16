@@ -121,17 +121,26 @@
         document.getElementById('submit-btn').innerText = "⌛ ခေတ္တစောင့်ပါ...";
         document.getElementById('submit-btn').disabled = true;
 
-        let formData = new FormData();
-        formData.append('photo', fileInput.files[0]);
-        formData.append('user_id', tg.initDataUnsafe.user.id);
-        formData.append('user_name', tg.initDataUnsafe.user.first_name);
-        formData.append('game_id', pid + (document.getElementById('server_id').value ? " (" + document.getElementById('server_id').value + ")" : ""));
-        formData.append('game', document.getElementById('game_select').value);
-        formData.append('item', selectedItem.name);
-        formData.append('price', selectedItem.price);
-        formData.append('method', selectedMethod);
-
         try {
+            // ✨ FIX: Telegram User ဒေတာကို try-catch ထဲမှာ လုံခြုံစွာ စစ်ဆေးထုတ်ယူခြင်း
+            let userId = "Unknown";
+            let firstName = "Unknown";
+            
+            if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+                userId = tg.initDataUnsafe.user.id || "Unknown";
+                firstName = tg.initDataUnsafe.user.first_name || "Unknown";
+            }
+
+            let formData = new FormData();
+            formData.append('photo', fileInput.files[0]);
+            formData.append('user_id', userId);
+            formData.append('user_name', firstName);
+            formData.append('game_id', pid + (document.getElementById('server_id').value ? " (" + document.getElementById('server_id').value + ")" : ""));
+            formData.append('game', document.getElementById('game_select').value);
+            formData.append('item', selectedItem.name);
+            formData.append('price', selectedItem.price);
+            formData.append('method', selectedMethod);
+
             const response = await fetch('https://sincekshop-fa7.xs001.jrnm.app/upload', { 
                 method: 'POST', 
                 body: formData 
@@ -142,13 +151,11 @@
                 tg.close();
             } else {
                 tg.showAlert("ပို့မရဖြစ်နေပါသည်။ ခဏနေမှ ပြန်စမ်းကြည့်ပါ။");
-                // ✨ Error ဖြစ်ပါက ခလုတ်ကို မူလစာသားအတိုင်း ပြန်ဖွင့်ပေးခြင်း
                 document.getElementById('submit-btn').innerText = "အတည်ပြုပြီး ဝယ်ယူမည် 💎";
                 document.getElementById('submit-btn').disabled = false;
             }
         } catch (e) {
-            tg.showAlert("Error: " + e);
-            // ✨ Connection Error တက်ပါက ခလုတ်ကို မူလစာသားအတိုင်း ပြန်ဖွင့်ပေးခြင်း
+            tg.showAlert("Error: " + e.message);
             document.getElementById('submit-btn').innerText = "အတည်ပြုပြီး ဝယ်ယူမည် 💎";
             document.getElementById('submit-btn').disabled = false;
         }
